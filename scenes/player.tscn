@@ -1,0 +1,58 @@
+[gd_scene load_steps=5 format=3 uid="uid://b2ebm0cvfcpod"]
+
+[ext_resource type="Script" path="res://scripts/PlayerController.cs" id="1_vyadh"]
+[ext_resource type="PackedScene" uid="uid://bqqtmurohygcc" path="res://assets/blender/gun.blend" id="2_bs4q8"]
+[ext_resource type="Texture2D" uid="uid://cg5dufvdjiok6" path="res://assets/textures/crosshair.png" id="3_md4xb"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_jva3y"]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="CharacterBody3D" type="CharacterBody3D" parent="."]
+script = ExtResource("1_vyadh")
+bulletSpeed = 1.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_jva3y")
+
+[node name="PlayerCamera" type="Camera3D" parent="CharacterBody3D"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6504, -0.359)
+
+[node name="GunMesh" parent="CharacterBody3D/PlayerCamera" instance=ExtResource("2_bs4q8")]
+transform = Transform3D(-0.276032, -0.549272, 0.0182003, 0.547603, -0.276614, -0.0429002, 0.0465014, -0.00304924, 0.613232, 0.62, -0.441, -0.169)
+
+[node name="Nozzle" type="Node3D" parent="CharacterBody3D/PlayerCamera"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.604, -0.397, -0.792999)
+
+[node name="GunRay" type="RayCast3D" parent="CharacterBody3D/PlayerCamera"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.4)
+target_position = Vector3(0, 0, -1)
+collide_with_bodies = false
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="Control"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_md4xb")
+stretch_mode = 2

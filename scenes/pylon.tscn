@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://bsdtcccpuy5kt"]
+
+[ext_resource type="PackedScene" uid="uid://dw5d3ycwvj6lo" path="res://assets/blender/pylon.blend" id="1_cavdu"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_1pn3y"]
+
+[node name="StaticBody3D" type="StaticBody3D"]
+
+[node name="pylon" parent="." instance=ExtResource("1_cavdu")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(6, 0, 0, 0, 6, 0, 0, 0, 6, 0, -6, 0)
+shape = SubResource("CylinderShape3D_1pn3y")

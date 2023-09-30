@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://clohqqqa4bhg4"]
+
+[ext_resource type="Script" path="res://scripts/Game.cs" id="1_rwjee"]
+[ext_resource type="PackedScene" uid="uid://cggqb75a8w8r" path="res://addons/debug_menu/debug_menu.tscn" id="2_2ait3"]
+
+[node name="Root" type="Node3D"]
+script = ExtResource("1_rwjee")
+
+[node name="CanvasLayer" parent="." instance=ExtResource("2_2ait3")]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.944158, -0.182597, -0.27427, 0.329493, 0.52323, 0.785917, 0, -0.832399, 0.554176, 0, 40.1065, 0)

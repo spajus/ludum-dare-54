@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://bs4uwb4rgyqb0"]
+
+[ext_resource type="PackedScene" uid="uid://c1xk1r4rpj6gc" path="res://assets/blender/bullet.blend" id="1_bciaq"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_mar4p"]
+radius = 0.0612709
+
+[node name="RigidBody3D" type="RigidBody3D"]
+mass = 0.01
+gravity_scale = 0.0
+
+[node name="BulletMesh" parent="." instance=ExtResource("1_bciaq")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_mar4p")
