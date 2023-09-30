@@ -1,0 +1,15 @@
+[gd_scene load_steps=4 format=3 uid="uid://befu61n857ome"]
+
+[ext_resource type="PackedScene" uid="uid://dhln5mxrej3w0" path="res://assets/blender/book.blend" id="1_h5hok"]
+[ext_resource type="Script" path="res://scripts/Book.cs" id="3_px74n"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_qnfoc"]
+size = Vector3(0.0529065, 0.370281, 0.246193)
+
+[node name="Node3D" type="RigidBody3D"]
+script = ExtResource("3_px74n")
+
+[node name="book" parent="." instance=ExtResource("1_h5hok")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_qnfoc")

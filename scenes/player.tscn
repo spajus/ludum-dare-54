@@ -1,7 +1,6 @@
-[gd_scene load_steps=5 format=3 uid="uid://b2ebm0cvfcpod"]
+[gd_scene load_steps=4 format=3 uid="uid://b2ebm0cvfcpod"]
 
 [ext_resource type="Script" path="res://scripts/PlayerController.cs" id="1_vyadh"]
-[ext_resource type="PackedScene" uid="uid://bqqtmurohygcc" path="res://assets/blender/gun.blend" id="2_bs4q8"]
 [ext_resource type="Texture2D" uid="uid://cg5dufvdjiok6" path="res://assets/textures/crosshair.png" id="3_md4xb"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_jva3y"]
@@ -20,14 +19,7 @@ shape = SubResource("CapsuleShape3D_jva3y")
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6504, -0.359)
 
-[node name="GunMesh" parent="CharacterBody3D/PlayerCamera" instance=ExtResource("2_bs4q8")]
-transform = Transform3D(-0.276032, -0.549272, 0.0182003, 0.547603, -0.276614, -0.0429002, 0.0465014, -0.00304924, 0.613232, 0.62, -0.441, -0.169)
-
-[node name="Nozzle" type="Node3D" parent="CharacterBody3D/PlayerCamera"]
-unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.604, -0.397, -0.792999)
-
-[node name="GunRay" type="RayCast3D" parent="CharacterBody3D/PlayerCamera"]
+[node name="SightRay" type="RayCast3D" parent="CharacterBody3D/PlayerCamera"]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.4)
 target_position = Vector3(0, 0, -1)

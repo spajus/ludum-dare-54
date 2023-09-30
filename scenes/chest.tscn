@@ -1,0 +1,29 @@
+[gd_scene load_steps=5 format=3 uid="uid://drv3jwpokk3bs"]
+
+[ext_resource type="PackedScene" uid="uid://dycxoce3dxj2l" path="res://assets/blender/chest.blend" id="1_2of2n"]
+[ext_resource type="Script" path="res://scripts/Chest.cs" id="2_qap4f"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_mdpi4"]
+height = 1.4228
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_33bi6"]
+size = Vector3(1, 0.409094, 0.502577)
+
+[node name="Chest" type="Node3D"]
+
+[node name="chest" parent="." instance=ExtResource("1_2of2n")]
+
+[node name="Area3D" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("2_qap4f")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0.0216075, 0)
+shape = SubResource("CapsuleShape3D_mdpi4")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0616141, 0)
+shape = SubResource("BoxShape3D_33bi6")

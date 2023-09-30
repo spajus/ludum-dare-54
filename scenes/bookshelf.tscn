@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://b54yk7eqnxaw7"]
+
+[ext_resource type="PackedScene" uid="uid://dk0gwciflju6g" path="res://assets/blender/bookshelf.blend" id="1_d4x6u"]
+
+[node name="Bookshelf" type="Node3D"]
+
+[node name="Bookshelf" parent="." instance=ExtResource("1_d4x6u")]

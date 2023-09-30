@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://cx5pv8rln3tn4"]
+
+[ext_resource type="PackedScene" uid="uid://bpsp36svrm8af" path="res://assets/blender/room.blend" id="1_cfrar"]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="room" parent="." instance=ExtResource("1_cfrar")]

@@ -37,8 +37,11 @@ public partial class PlayerController : CharacterBody3D {
             velocity.Y = JumpVelocity;
         }
 
-        if (Input.IsActionJustPressed("shoot")) {
-            FireBullet();
+        if (Input.IsActionJustPressed("spawn_book")) {
+            SpawnBook();
+        }
+        if (Input.IsActionJustPressed("interact")) {
+            Interact();
         }
 
         // Get the input direction and handle the movement/deceleration.
@@ -55,10 +58,12 @@ public partial class PlayerController : CharacterBody3D {
         }
         return velocity;
     }
-    private void FireBullet() {
-        var nozzle = GetNode<Node3D>(Nodes.Nozzle);
+    private void Interact() {
+
+    }
+    private void SpawnBook() {
         var gunRay = GetNode<RayCast3D>(Nodes.GunRay);
-        var bullet = Runtime.BulletPool.Spawn();
+        var bullet = Runtime.BookPool.Spawn();
         var gunDir = gunRay.ToGlobal(gunRay.TargetPosition);
         GD.Print("Ray: {0}:{1}", gunRay, gunDir);
         var gunPos = gunRay.GlobalPosition;
