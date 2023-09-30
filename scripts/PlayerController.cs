@@ -10,19 +10,40 @@ public partial class PlayerController : CharacterBody3D {
 
     private float shootDistance = 1000f;
 
-    //private Node3D nozzle;
     private Camera3D camera;
-    //private RayCast3D gunRay;
+    private RayCast3D sightRay;
+    private CanvasModulate crosshair;
     [Export]
-    private float bulletSpeed = 1000f;
+    private float dropSpeed = 2;
+
+    private Book carriedBook;
 
     public override void _Ready() {
         camera = GetNode<Camera3D>(Nodes.Camera);
+        sightRay = GetNode<RayCast3D>(Nodes.SightRay);
+        crosshair = GetNode<CanvasModulate>(Nodes.CrosshairModulate);
     }
 
     public override void _PhysicsProcess(double delta) {
         Velocity = HandleInput(Velocity, (float) delta);
         MoveAndSlide();
+        MoveCarriedBook();
+        RaycastSight();
+    }
+
+    private void MoveCarriedBook() {
+        if (carriedBook == null) { return; }
+        var sightDir = sightRay.ToGlobal(sightRay.TargetPosition);
+        var rayPos = sightRay.GlobalPosition;
+        carriedBook.GlobalPosition = rayPos + sightDir.Normalized() * 1f;
+    }
+
+    private void RaycastSight() {
+        if (sightRay.IsColliding()) {
+            crosshair.Color = Colors.Green;
+        } else {
+            crosshair.Color = Colors.White;
+        }
     }
 
     private Vector3 HandleInput(Vector3 velocity, float delta) {
@@ -59,23 +80,35 @@ public partial class PlayerController : CharacterBody3D {
         return velocity;
     }
     private void Interact() {
-
+        if (carriedBook != null) {
+            DropBook();
+            return;
+        }
+        if (!sightRay.IsColliding()) { return; }
+        var bookCol = (Node3D) sightRay.GetCollider();
+        var book = bookCol.GetNode<Book>(bookCol.GetPath());
+        CarryBook(book);
+        GD.Print(book);
     }
+
+    private void CarryBook(Book book) {
+        book.Set("mass", 0f);
+        carriedBook = book;
+    }
+
+    private void DropBook() {
+        carriedBook.Set("mass", 1f);
+        carriedBook = null;
+    }
+
     private void SpawnBook() {
-        var gunRay = GetNode<RayCast3D>(Nodes.GunRay);
-        var bullet = Runtime.BookPool.Spawn();
-        var gunDir = gunRay.ToGlobal(gunRay.TargetPosition);
-        GD.Print("Ray: {0}:{1}", gunRay, gunDir);
-        var gunPos = gunRay.GlobalPosition;
-        var bulletPos = gunPos + gunDir * 1f;
-        var pointInDistance = gunPos + gunDir * 1000;
-        //var bulletOrigin = nozzle.GlobalTransform.Origin;
-        //var bulletDir = pointInDistance - bulletOrigin;
-        Runtime.Root.AddChild(bullet);
-        bullet.GlobalPosition = gunPos;
-        bullet.GlobalRotation = gunRay.GlobalRotation;
-        //bullet.GlobalPosition = bulletOrigin;
-        bullet.LinearVelocity = gunDir.Normalized() * bulletSpeed;
+        var book = Runtime.BookPool.Spawn();
+        var sightDir = sightRay.ToGlobal(sightRay.TargetPosition);
+        var rayPos = sightRay.GlobalPosition;
+        Runtime.Root.AddChild(book);
+        book.GlobalPosition = rayPos;
+        book.GlobalRotation = sightRay.GlobalRotation;
+        book.LinearVelocity = sightDir.Normalized() * dropSpeed;
     }
 
     private float mouseSensitivity = 0.1f;

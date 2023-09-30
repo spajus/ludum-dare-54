@@ -6,7 +6,8 @@
 [sub_resource type="BoxShape3D" id="BoxShape3D_qnfoc"]
 size = Vector3(0.0529065, 0.370281, 0.246193)
 
-[node name="Node3D" type="RigidBody3D"]
+[node name="Book" type="RigidBody3D"]
+collision_layer = 3
 script = ExtResource("3_px74n")
 
 [node name="book" parent="." instance=ExtResource("1_h5hok")]

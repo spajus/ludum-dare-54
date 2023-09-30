@@ -32,7 +32,7 @@ public partial class Book : RigidBody3D {
         var colShape = GetNode<CollisionShape3D>("CollisionShape3D");
         var shape = (BoxShape3D) colShape.Shape.Duplicate();
         shape.Size = mesh.GetAabb().Size * chosen.Scale;
-        GD.Print("Size ", shape.Size, " AABB: ", mesh.GetAabb().Size);
+        //GD.Print("Size ", shape.Size, " AABB: ", mesh.GetAabb().Size);
         colShape.Shape = shape;
     }
 
