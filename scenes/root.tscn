@@ -1,12 +1,29 @@
-[gd_scene load_steps=3 format=3 uid="uid://clohqqqa4bhg4"]
+[gd_scene load_steps=6 format=3 uid="uid://clohqqqa4bhg4"]
 
 [ext_resource type="Script" path="res://scripts/Game.cs" id="1_rwjee"]
 [ext_resource type="PackedScene" uid="uid://cggqb75a8w8r" path="res://addons/debug_menu/debug_menu.tscn" id="2_2ait3"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_j5uie"]
+sky_top_color = Color(0.670588, 0.337255, 0.286275, 1)
+sky_horizon_color = Color(0.996078, 0.494118, 0, 1)
+sky_curve = 0.0549033
+sky_energy_multiplier = 2.11
+ground_bottom_color = Color(0.0901961, 0.0745098, 0.0509804, 1)
+ground_horizon_color = Color(0.823529, 0.592157, 0.501961, 1)
+sun_angle_max = 32.08
+
+[sub_resource type="Sky" id="Sky_sxyhj"]
+sky_material = SubResource("ProceduralSkyMaterial_j5uie")
+process_mode = 1
+
+[sub_resource type="Environment" id="Environment_h34g6"]
+background_mode = 2
+sky = SubResource("Sky_sxyhj")
 
 [node name="Root" type="Node3D"]
 script = ExtResource("1_rwjee")
 
 [node name="CanvasLayer" parent="." instance=ExtResource("2_2ait3")]
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.944158, -0.182597, -0.27427, 0.329493, 0.52323, 0.785917, 0, -0.832399, 0.554176, 0, 40.1065, 0)
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_h34g6")
