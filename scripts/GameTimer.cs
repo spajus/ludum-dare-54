@@ -4,7 +4,7 @@ using Godot;
 
 public class GameTimer {
     private readonly RichTextLabel label;
-    private bool isRunning;
+    public bool IsRunning;
     private double time;
     private readonly double timeout;
     public event Action OnDone;
@@ -26,17 +26,17 @@ public class GameTimer {
 
     public void Start() {
         time = 0;
-        isRunning = true;
+        IsRunning = true;
     }
 
     public void Tick(double delta) {
-        if (!isRunning) { return; }
+        if (!IsRunning) { return; }
+        if (Runtime.GameState != Game.State.Game) { return; }
         time += delta;
         var timeLeft = Mathf.RoundToInt(timeout - time);
         UpdateTimerLabel(timeLeft);
         if (time < timeout) { return; }
         OnDone?.Invoke();
-        OnDone = null;
-        isRunning = false;
+        IsRunning = false;
     }
 }

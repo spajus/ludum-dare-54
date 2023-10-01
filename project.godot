@@ -10,7 +10,8 @@ config_version=5
 
 [application]
 
-config/name="Ludum Dare 54"
+config/name="Shelf Shift"
+config/description="Ludum Dare 54 Compo entry by Spajus"
 run/main_scene="res://scenes/root.tscn"
 config/features=PackedStringArray("4.1", "C#", "Forward Plus")
 config/icon="res://icon.svg"

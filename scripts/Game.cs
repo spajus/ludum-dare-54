@@ -11,25 +11,20 @@ public partial class Game : Node {
     public override void _Ready() {
         var room = Utils.AddSceneTo<Room>(this, Scenes.Room);
         Runtime.Initialize(this, room);
-        room.SpawnBooks(100);
-        Utils.AddSceneTo<Node3D>(this, Scenes.Player);
         var ui = Utils.AddSceneTo<UI>(this, Scenes.UI);
         Utils.AddSceneTo<Node3D>(this, Scenes.Bookshelf, new Vector3(0, 0, -2.25f));
+        Utils.AddSceneTo<Node3D>(this, Scenes.Player);
         Runtime.UI = ui;
+        Runtime.Timer.OnDone += OnEndGame;
     }
 
-    public override void _Input(InputEvent evt) {
-        // Capture mouse when clicking on the game window
-        if (evt is InputEventMouseButton eventMouseButton && eventMouseButton.Pressed) {
-            Input.MouseMode = Input.MouseModeEnum.Captured;
-        }
+    public void StartGame() {
+        Runtime.BookPool.DespawnAll();
+        Runtime.Timer.Start();
+        Runtime.Room.SpawnBooks(100);
+    }
 
-        // Release mouse when pressing the 'Esc' key
-        if (evt is InputEventKey eventKey && eventKey.Pressed) {
-            if (eventKey.PhysicalKeycode == Key.Escape) {
-                Input.MouseMode = Input.MouseModeEnum.Visible;
-            }
-        }
+    private void OnEndGame() {
     }
 
     public override void _Process(double delta) {

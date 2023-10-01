@@ -12,79 +12,10 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_4s4ay")
 
-[node name="InGameLayer" type="CanvasLayer" parent="."]
+[node name="LayoutCrosshair" type="CanvasLayer" parent="."]
 unique_name_in_owner = true
 
-[node name="ScoreContainer" type="PanelContainer" parent="InGameLayer"]
-offset_left = 16.0
-offset_top = 16.0
-offset_right = 77.0
-offset_bottom = 82.0
-
-[node name="MarginContainer" type="MarginContainer" parent="InGameLayer/ScoreContainer"]
-layout_mode = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="InGameLayer/ScoreContainer/MarginContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="TimerLabel" type="RichTextLabel" parent="InGameLayer/ScoreContainer/MarginContainer/VBoxContainer"]
-unique_name_in_owner = true
-clip_contents = false
-layout_mode = 2
-bbcode_enabled = true
-text = "TIME LEFT: "
-fit_content = true
-scroll_active = false
-autowrap_mode = 0
-
-[node name="ScoreLabel" type="RichTextLabel" parent="InGameLayer/ScoreContainer/MarginContainer/VBoxContainer"]
-unique_name_in_owner = true
-clip_contents = false
-layout_mode = 2
-bbcode_enabled = true
-text = "SCORE"
-fit_content = true
-scroll_active = false
-autowrap_mode = 0
-
-[node name="PanelContainer" type="PanelContainer" parent="InGameLayer"]
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -56.0
-offset_top = 16.0
-offset_right = -16.0
-offset_bottom = 56.0
-grow_horizontal = 0
-
-[node name="MarginContainer" type="MarginContainer" parent="InGameLayer/PanelContainer"]
-layout_mode = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="InGameLayer/PanelContainer/MarginContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Label" type="Label" parent="InGameLayer/PanelContainer/MarginContainer/VBoxContainer"]
-layout_mode = 2
-text = "Controls
-"
-horizontal_alignment = 1
-
-[node name="Label2" type="Label" parent="InGameLayer/PanelContainer/MarginContainer/VBoxContainer"]
-layout_mode = 2
-text = "Move: WASD
-Jump: Space
-Crouch: Shift
-Pick Up / Drop: LMB
-Rotate Book: 
-Hold RMB + Mouse / Q / E"
-
-[node name="CrosshairLayer" type="CanvasLayer" parent="InGameLayer"]
-
-[node name="Crosshair" type="TextureRect" parent="InGameLayer/CrosshairLayer"]
+[node name="Crosshair" type="TextureRect" parent="LayoutCrosshair"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -99,13 +30,98 @@ grow_vertical = 2
 texture = ExtResource("1_bcq18")
 stretch_mode = 2
 
-[node name="CrosshairModulate" type="CanvasModulate" parent="InGameLayer/CrosshairLayer"]
+[node name="CrosshairModulate" type="CanvasModulate" parent="LayoutCrosshair"]
 unique_name_in_owner = true
 color = Color(0.321569, 0, 0.356863, 1)
 
-[node name="MainMenuLayer" type="CanvasLayer" parent="."]
+[node name="LayoutGame" type="CanvasLayer" parent="."]
+unique_name_in_owner = true
 
-[node name="PanelContainer" type="PanelContainer" parent="MainMenuLayer"]
+[node name="ScoreContainer" type="PanelContainer" parent="LayoutGame"]
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 77.0
+offset_bottom = 82.0
+
+[node name="MarginContainer" type="MarginContainer" parent="LayoutGame/ScoreContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="LayoutGame/ScoreContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="TimerLabel" type="RichTextLabel" parent="LayoutGame/ScoreContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+clip_contents = false
+layout_mode = 2
+bbcode_enabled = true
+text = "TIME LEFT: "
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[node name="ScoreLabel" type="RichTextLabel" parent="LayoutGame/ScoreContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+clip_contents = false
+layout_mode = 2
+bbcode_enabled = true
+text = "SCORE"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[node name="PanelContainer" type="PanelContainer" parent="LayoutGame"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -56.0
+offset_top = 16.0
+offset_right = -16.0
+offset_bottom = 56.0
+grow_horizontal = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="LayoutGame/PanelContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="LayoutGame/PanelContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="LayoutGame/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Controls
+"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="LayoutGame/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 25
+
+[node name="Label2" type="Label" parent="LayoutGame/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Move
+Jump
+Crouch
+Pick Up / Drop
+Adjust Distance
+Rotate"
+
+[node name="Label3" type="Label" parent="LayoutGame/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.721569, 0.729412, 0.168627, 1)
+text = "WASD
+Space
+Shift
+LMB
+Mouse Scroll
+RMB + Mouse / Q / E"
+
+[node name="LayoutMainMenu" type="CanvasLayer" parent="."]
+unique_name_in_owner = true
+
+[node name="PanelContainer" type="PanelContainer" parent="LayoutMainMenu"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -114,37 +130,57 @@ anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="MainMenuLayer/PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="LayoutMainMenu/PanelContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 50
 theme_override_constants/margin_top = 50
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 50
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MainMenuLayer/PanelContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="LayoutMainMenu/PanelContainer/MarginContainer"]
 layout_mode = 2
 theme_override_constants/separation = 25
 
-[node name="GameName" type="Label" parent="MainMenuLayer/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="GameName" type="Label" parent="LayoutMainMenu/PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 61
-text = "ShelfShift"
+text = "Shelf Shift"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Label" type="Label" parent="MainMenuLayer/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="LayoutMainMenu/PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 11
 text = "Ludum Dare 54 entry by Spajus"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="StartGameButton" type="Button" parent="MainMenuLayer/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="HighScoreLabel" type="Label" parent="LayoutMainMenu/PanelContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 52
-text = "PLAY"
+theme_override_colors/font_color = Color(0, 0.721569, 0.133333, 1)
+theme_override_font_sizes/font_size = 24
+text = "High Score: 1000"
+horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="ExitButton" type="Button" parent="MainMenuLayer/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="LastScoreLabel" type="Label" parent="LayoutMainMenu/PanelContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.721569, 0.635294, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "Last Score: 1000"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="StartGameButton" type="Button" parent="LayoutMainMenu/PanelContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 52
-text = "EXIT"
+text = "Play"
+
+[node name="ExitButton" type="Button" parent="LayoutMainMenu/PanelContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 52
+text = "Exit"

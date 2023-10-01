@@ -3,18 +3,13 @@ using System;
 using System.ComponentModel;
 
 public partial class PlayerController : CharacterBody3D {
-    public const float Speed = 2.0f;
-    public const float JumpVelocity = 3.0f;
-    public const float crouchSpeed = 10f;
-    private const float dropSpeed = 2f;
-    private const float bookForceSpeed = 2 * 20f;
-    private const float rotateSpeed = 0.25f;
     private Vector3 crouchOffset;
     private Vector3 standOffset;
-    private const float minHoldDist = 0.25f;
-    private const float maxHoldDist = 2f;
-    private const float distChangeSpeed = 0.25f;
-    private float holdDistance = 1f;
+    private float holdDistance = Consts.BookHoldDist;
+
+    private float mouseSensitivity = 0.1f;
+
+    private Vector3 mouseRot;
 
     // Get the gravity from the project settings to be synced with RigidBody nodes.
     public float gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
@@ -29,12 +24,15 @@ public partial class PlayerController : CharacterBody3D {
         standOffset = camera.Position;
         crouchOffset = standOffset * new Vector3(1f, 0.5f, 1f);
         sightRay = GetNode<RayCast3D>(Nodes.SightRay);
+        Runtime.Timer.OnDone += DropBook;
     }
 
     public override void _PhysicsProcess(double delta) {
-        isRotMode = Input.IsActionPressed("rot_mode");
-        Velocity = HandleInput(Velocity, (float) delta);
-        MoveAndSlide();
+        if (Runtime.GameState == Game.State.Game) {
+            isRotMode = Input.IsActionPressed("rot_mode");
+            Velocity = HandleInput(Velocity, (float) delta);
+            MoveAndSlide();
+        }
         MoveCarriedBook();
         RaycastSight();
     }
@@ -52,14 +50,12 @@ public partial class PlayerController : CharacterBody3D {
             Vector3 direction = distanceToTarget;
             var len = distanceToTarget.Length();
             direction = direction.Normalized() * (len * len);
-            force = direction * bookForceSpeed;
+            force = direction * Consts.BookForceSpeed;
         }
 
-        if (isRotMode) {
-            mouseRot.Z += Input.GetAxis("rot_left", "rot_right");
-        }
+        mouseRot.Z += Input.GetAxis("rot_left", "rot_right");
         if (mouseRot.LengthSquared() > 0.001f) {
-            carriedBook.ApplyTorque(mouseRot * rotateSpeed);
+            carriedBook.ApplyTorque(mouseRot * Consts.BookRotateSpeed);
             mouseRot = Vector3.Zero;
         }
         carriedBook.ApplyForce(force);
@@ -85,7 +81,7 @@ public partial class PlayerController : CharacterBody3D {
 
         // Handle Jump.
         if (isOnFloor && Input.IsActionJustPressed("jump")) {
-            velocity.Y = JumpVelocity;
+            velocity.Y = Consts.JumpVelocity;
         }
 
         if (Input.IsActionPressed("spawn_book")) {
@@ -97,9 +93,9 @@ public partial class PlayerController : CharacterBody3D {
 
         if (isOnFloor) {
             if (Input.IsActionPressed("crouch")) {
-                camera.Position = camera.Position.Lerp(crouchOffset, delta * crouchSpeed);
+                camera.Position = camera.Position.Lerp(crouchOffset, delta * Consts.CrouchSpeed);
             } else {
-                camera.Position = camera.Position.Lerp(standOffset, delta * crouchSpeed);
+                camera.Position = camera.Position.Lerp(standOffset, delta * Consts.CrouchSpeed);
             }
         }
 
@@ -110,11 +106,11 @@ public partial class PlayerController : CharacterBody3D {
             Vector3 direction = (Transform.Basis *
                 new Vector3(inputDir.X, 0, inputDir.Y)).Normalized();
             if (direction != Vector3.Zero) {
-                velocity.X = direction.X * Speed;
-                velocity.Z = direction.Z * Speed;
+                velocity.X = direction.X * Consts.MoveSpeed;
+                velocity.Z = direction.Z * Consts.MoveSpeed;
             } else {
-                velocity.X = Mathf.MoveToward(Velocity.X, 0, Speed);
-                velocity.Z = Mathf.MoveToward(Velocity.Z, 0, Speed);
+                velocity.X = Mathf.MoveToward(Velocity.X, 0, Consts.MoveSpeed);
+                velocity.Z = Mathf.MoveToward(Velocity.Z, 0, Consts.MoveSpeed);
             }
         }
         return velocity;
@@ -152,30 +148,27 @@ public partial class PlayerController : CharacterBody3D {
                 rand.NextSingle() * 180f,
                 rand.NextSingle() * 180f,
                 rand.NextSingle() * 180f);
-        book.LinearVelocity = sightDir.Normalized() * dropSpeed;
+        book.LinearVelocity = sightDir.Normalized() * Consts.BookDropSpeed;
     }
-
-    private float mouseSensitivity = 0.1f;
-
-    private Vector3 mouseRot;
 
 
     public override void _Input(InputEvent evt) {
         if (!Runtime.IsFocused) { return; }
+        if (Runtime.GameState != Game.State.Game) { return; }
 
         if (evt is InputEventMouseButton emb) {
             if (emb.IsPressed()) {
                 if (carriedBook != null) {
                     var dir = 0f;
                     if (emb.ButtonIndex == MouseButton.WheelUp) {
-                        dir = distChangeSpeed;
+                        dir = Consts.BookHoldDistChangeSpeed;
                     }
                     if (emb.ButtonIndex == MouseButton.WheelDown) {
-                        dir = -distChangeSpeed;
+                        dir = -Consts.BookHoldDistChangeSpeed;
                     }
                     if (dir != 0f) {
                         holdDistance = Mathf.Clamp(holdDistance + dir,
-                            minHoldDist, maxHoldDist);
+                            Consts.MinBookHoldDist, Consts.MaxBookHoldDist);
                     }
                 }
             }
