@@ -54,7 +54,7 @@ public partial class PlayerController : CharacterBody3D {
             force = direction * Consts.BookForceSpeed;
         }
 
-        mouseRot.Z += Input.GetAxis("rot_left", "rot_right");
+        mouseRot.Z += Input.GetAxis("rot_left", "rot_right") * 0.5f;
         if (mouseRot.LengthSquared() > 0.001f) {
             carriedBook.ApplyTorque(mouseRot * Consts.BookRotateSpeed);
             mouseRot = Vector3.Zero;
@@ -122,10 +122,11 @@ public partial class PlayerController : CharacterBody3D {
             return;
         }
         if (!sightRay.IsColliding()) { return; }
-        var bookCol = (Node3D) sightRay.GetCollider();
-        var book = bookCol.GetNode<Book>(bookCol.GetPath());
-        CarryBook(book);
-        GD.Print(book);
+        var collider = (Node3D) sightRay.GetCollider();
+        if (collider is Book book) {
+            CarryBook(book);
+        }
+        //var book = bookCol.GetNode<Book>(bookCol.GetPath());
     }
 
     private void CarryBook(Book book) {

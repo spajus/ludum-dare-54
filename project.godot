@@ -14,6 +14,9 @@ config/name="Shelf Shift"
 config/description="Ludum Dare 54 Compo entry by Spajus"
 run/main_scene="res://scenes/root.tscn"
 config/features=PackedStringArray("4.1", "C#", "Forward Plus")
+boot_splash/bg_color=Color(0.0627451, 0.054902, 0.101961, 1)
+boot_splash/show_image=false
+boot_splash/fullsize=false
 config/icon="res://icon.svg"
 
 [autoload]

@@ -19,12 +19,12 @@ public class GameTimer {
         if (lastTimeLeft == timeLeft) { return; }
         lastTimeLeft = timeLeft;
         if (timeLeft < 6) {
-            Runtime.Audio.PlayBeepAt(Runtime.Camera.GlobalPosition, timeLeft > 0, 1f + (5 - timeLeft) * 0.05f);
+            Runtime.Audio.PlayBeepAt(timeLeft > 0, 1f + (5 - timeLeft) * 0.05f);
         }
         var color = "green";
         if (timeLeft <= 10) {
             color = "red";
-        } else if (timeLeft < 60) {
+        } else if (timeLeft < 30) {
             color = "yellow";
         }
         label.Text = $"Time Left: [color={color}]{timeLeft}[/color]";

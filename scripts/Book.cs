@@ -87,13 +87,13 @@ public partial class Book : RigidBody3D, IPoolable {
         if (givenScore > 0) { return; }
         givenScore = scoreValue;
         Runtime.Score.Add(givenScore);
-        Runtime.Audio.PlayAddBookAt(GlobalPosition);
+        Runtime.Audio.PlayAddBookAt();
     }
 
     private void RemoveScore() {
         if (givenScore == 0) { return; }
         Runtime.Score.Add(-givenScore);
-        Runtime.Audio.PlayLoseBookAt(GlobalPosition);
+        Runtime.Audio.PlayLoseBookAt();
         givenScore = 0;
     }
 
