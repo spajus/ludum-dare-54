@@ -9,16 +9,24 @@ public class NodePool<T> where T : Node3D {
         this.scene = scene;
     }
 
-    public T Spawn() {
-        if (pool.TryPop(out var res)) {
+    public T Spawn(Node parent) {
+        T res = null;
+        if (pool.TryPop(out res)) {
             res.ProcessMode = Node.ProcessModeEnum.Inherit;
             res.Visible = true;
-            spawned.Add(res);
-            return res;
+            if (!parent.IsAncestorOf(res)) {
+                // FIXME: would this reparent or create a copy? not sure yet.
+                parent.AddChild(res);
+            }
+        } else {
+            res = Utils.Instantiate<T>(scene);
+            parent.AddChild(res);
         }
-        var newInst = Utils.Instantiate<T>(scene);
-        spawned.Add(newInst);
-        return newInst;
+        spawned.Add(res);
+        if (res is IPoolable pres) {
+            pres.OnSpawn();
+        }
+        return res;
     }
 
     public void Despawn(T item) {

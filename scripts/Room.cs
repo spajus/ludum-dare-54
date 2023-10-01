@@ -21,8 +21,7 @@ public partial class Room : Node3D {
                 Rng.NextFloat(-extents.Z, extents.Z)
             ) * spawnShape.GlobalTransform.Basis
                 + spawnShape.GlobalTransform.Origin;
-        var book = Runtime.BookPool.Spawn();
-        Runtime.Root.AddChild(book);
+        var book = Runtime.BookPool.Spawn(Runtime.Root);
         book.GlobalPosition = bookPos;
         book.GlobalRotation = new Vector3(
                 Rng.NextFloat() * 180f,

@@ -31,6 +31,7 @@ public class Score {
     }
 
     public void Add(int amt) {
+        GD.Print("Changing score by: ", amt);
         score = Mathf.Clamp(score + amt, 0, int.MaxValue);
         label.Text = $"Score: [color=green]{score}[/color]";
     }

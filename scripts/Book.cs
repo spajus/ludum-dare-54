@@ -1,18 +1,21 @@
 using Godot;
 using System;
 
-public partial class Book : RigidBody3D {
-    private const float scoreSizeMul = 20f;
-    private const float stillnessThreshold = 0.001f;
-    private const float bookCarryMass = 0.5f;
+public partial class Book : RigidBody3D, IPoolable {
     public bool IsOnShelf;
     public bool WasMoving;
     public bool IsCarried;
     private int givenScore;
     private int scoreValue;
-    // Called when the node enters the scene tree for the first time.
+    private bool IsJustSpawned;
+    private Vector3 lastVelocity;
+    public void OnSpawn() {
+        IsJustSpawned = true;
+    }
+
     public override void _Ready() {
         var rand = new Random();
+        BodyEntered += OnCollision;
         var bookMeshes = GetNode<Node3D>("book");
         var childCount = bookMeshes.GetChildCount();
         var choice = Mathf.FloorToInt(childCount * rand.NextSingle());
@@ -26,8 +29,6 @@ public partial class Book : RigidBody3D {
             }
         }
 
-        GD.Print("Children: ", childCount);
-        GD.Print("Choice: ", choice);
         var mesh = chosen;
         var mat = mesh.GetActiveMaterial(0);
         var dupeMat = (Material) mat.Duplicate();
@@ -40,46 +41,70 @@ public partial class Book : RigidBody3D {
         var colShape = GetNode<CollisionShape3D>("CollisionShape3D");
         var shape = (BoxShape3D) colShape.Shape.Duplicate();
         shape.Size = mesh.GetAabb().Size * chosen.Scale;
-        var scoreSize = shape.Size * scoreSizeMul;
+        var scoreSize = shape.Size * Consts.BookScoreSizeMul;
         scoreValue = Mathf.RoundToInt(scoreSize.X * scoreSize.Y * scoreSize.Z);
         //GD.Print("Size ", shape.Size, " AABB: ", mesh.GetAabb().Size);
         colShape.Shape = shape;
     }
 
-    public override void _PhysicsProcess(double delta) {
-        if (LinearVelocity.LengthSquared() > stillnessThreshold) {
-            WasMoving = true;
-        }
-        if (AngularVelocity.LengthSquared() < stillnessThreshold) {
-            WasMoving = true;
+    private void OnCollision(Node body) {
+        if (IsJustSpawned) {
+            IsJustSpawned = false;
+            return;
         }
         if (IsCarried) { return; }
-        if (!WasMoving) { return; }
+        if (lastVelocity.LengthSquared() > Consts.BookHitSoundMinVelocity) {
+            Runtime.Audio.PlayBookDropAt(GlobalPosition);
+        }
+    }
+
+
+    public override void _PhysicsProcess(double delta) {
+        lastVelocity = LinearVelocity;
+        var velMag = lastVelocity.LengthSquared();
+        var isMoving = false;
+        if (velMag > Consts.BookStillnessThreshold) {
+            WasMoving = true;
+            isMoving = true;
+        }
+        if (AngularVelocity.LengthSquared() > Consts.BookStillnessThreshold) {
+            WasMoving = true;
+            isMoving = true;
+        }
+        if (IsCarried) { return; }
+        if (isMoving || !WasMoving) { return; }
         // settled!
         if (IsOnShelf) {
-            if (givenScore == 0) {
-                givenScore = scoreValue;
-                Runtime.Score.Add(givenScore);
-            }
+            AddScore();
         } else {
-            if (givenScore > 0) {
-                Runtime.Score.Add(-givenScore);
-                givenScore = 0;
-            }
+            RemoveScore();
         }
+
         WasMoving = false;
     }
 
+    private void AddScore() {
+        if (givenScore > 0) { return; }
+        givenScore = scoreValue;
+        Runtime.Score.Add(givenScore);
+        Runtime.Audio.PlayAddBookAt(GlobalPosition);
+    }
+
+    private void RemoveScore() {
+        if (givenScore == 0) { return; }
+        Runtime.Score.Add(-givenScore);
+        Runtime.Audio.PlayLoseBookAt(GlobalPosition);
+        givenScore = 0;
+    }
+
+
     public void Carry() {
-        Set("mass", bookCarryMass);
+        Set("mass", Consts.BookCarryMass);
         Set("linear_damp", 5f);
         Set("angular_damp", 5f);
-        if (givenScore > 0) {
-            givenScore = 0;
-            Runtime.Score.Add(-givenScore);
-        }
-        WasMoving = true;
         IsCarried = true;
+        RemoveScore();
+        WasMoving = true;
     }
 
     public void Drop() {

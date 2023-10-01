@@ -21,6 +21,7 @@ public partial class PlayerController : CharacterBody3D {
 
     public override void _Ready() {
         camera = GetNode<Camera3D>(Nodes.Camera);
+        Runtime.Camera = camera;
         standOffset = camera.Position;
         crouchOffset = standOffset * new Vector3(1f, 0.5f, 1f);
         sightRay = GetNode<RayCast3D>(Nodes.SightRay);
@@ -128,20 +129,19 @@ public partial class PlayerController : CharacterBody3D {
     }
 
     private void CarryBook(Book book) {
-        book.Carry();
+        book?.Carry();
         carriedBook = book;
     }
 
     private void DropBook() {
-        carriedBook.Drop();
+        carriedBook?.Drop();
         carriedBook = null;
     }
 
     private void DebugSpawnBook() {
-        var book = Runtime.BookPool.Spawn();
+        var book = Runtime.BookPool.Spawn(Runtime.Root);
         var sightDir = sightRay.ToGlobal(sightRay.TargetPosition);
         var rayPos = sightRay.GlobalPosition;
-        Runtime.Root.AddChild(book);
         book.GlobalPosition = rayPos;
         var rand = new Random();
         book.GlobalRotation = new Vector3(
