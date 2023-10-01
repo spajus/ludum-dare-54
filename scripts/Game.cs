@@ -21,7 +21,8 @@ public partial class Game : Node {
     public void StartGame() {
         Runtime.BookPool.DespawnAll();
         Runtime.Timer.Start();
-        Runtime.Room.SpawnBooks(100);
+        Runtime.Score.StartGame();
+        Runtime.Room.SpawnBooks(Consts.SpawnBooks);
     }
 
     private void OnEndGame() {

@@ -7,6 +7,7 @@ public class GameTimer {
     public bool IsRunning;
     private double time;
     private readonly double timeout;
+    private int extraTime;
     private int lastTimeLeft;
     public event Action OnDone;
     public GameTimer(RichTextLabel label, double timeout) {
@@ -32,6 +33,7 @@ public class GameTimer {
 
     public void Start() {
         time = 0;
+        extraTime = 0;
         IsRunning = true;
     }
 
@@ -41,10 +43,14 @@ public class GameTimer {
         if (!IsRunning) { return; }
         if (Runtime.GameState != Game.State.Game) { return; }
         time += delta;
-        var timeLeft = Mathf.RoundToInt(timeout - time);
+        var timeLeft = Mathf.RoundToInt(timeout - time) + extraTime;
         UpdateTimerLabel(timeLeft);
-        if (time < timeout) { return; }
+        if (time < timeout + extraTime) { return; }
         OnDone?.Invoke();
         IsRunning = false;
+    }
+
+    public void AddTime(int amt) {
+        extraTime += amt;
     }
 }

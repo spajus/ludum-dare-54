@@ -33,10 +33,10 @@ public class Audio {
         Play(isShort ? beepShort : beepLong, pitch);
     }
 
-    public void PlayAddBookAt() {
+    public void PlayAddBook() {
         Play(addBook);
     }
-    public void PlayLoseBookAt() {
+    public void PlayLoseBook() {
         Play(loseBook);
     }
 

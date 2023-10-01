@@ -10,6 +10,10 @@ public partial class Book : RigidBody3D, IPoolable {
     private bool IsJustSpawned;
     private Vector3 lastVelocity;
     public void OnSpawn() {
+        givenScore = 0;
+        IsCarried = false;
+        IsOnShelf = false;
+        lastVelocity = Vector3.Zero;
         IsJustSpawned = true;
     }
 
@@ -87,16 +91,17 @@ public partial class Book : RigidBody3D, IPoolable {
         if (givenScore > 0) { return; }
         givenScore = scoreValue;
         Runtime.Score.Add(givenScore);
-        Runtime.Audio.PlayAddBookAt();
+        Runtime.Audio.PlayAddBook();
+        Runtime.Timer.AddTime(Consts.AddBookBonusTime);
     }
 
     private void RemoveScore() {
         if (givenScore == 0) { return; }
         Runtime.Score.Add(-givenScore);
-        Runtime.Audio.PlayLoseBookAt();
+        Runtime.Audio.PlayLoseBook();
+        Runtime.Timer.AddTime(-Consts.AddBookBonusTime);
         givenScore = 0;
     }
-
 
     public void Carry() {
         Set("mass", Consts.BookCarryMass);
@@ -116,11 +121,6 @@ public partial class Book : RigidBody3D, IPoolable {
     }
 
     public void SetOnShelf(bool isOnShelf) {
-        if (isOnShelf == IsOnShelf) {
-            GD.PrintErr("Trying to change Book.IsOnShelf to the same value! ",
-                isOnShelf);
-        }
-        GD.Print("Book now on shelf: ", isOnShelf);
         IsOnShelf = isOnShelf;
     }
 }

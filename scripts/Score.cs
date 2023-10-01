@@ -9,7 +9,6 @@ public class Score {
     public Score(RichTextLabel label) {
         Runtime.Timer.OnDone += EndGame;
         this.label = label;
-        Add(0);
         Last = Runtime.Persist.Load(Consts.VarScoreLast, 0);
         High = Runtime.Persist.Load(Consts.VarScoreHigh, 0);
         NumGames = Runtime.Persist.Load(Consts.VarNumGames, 0);
@@ -18,6 +17,7 @@ public class Score {
     public void StartGame() {
         NumGames++;
         score = 0;
+        Add(0);
         Runtime.Persist.Save(Consts.VarNumGames, NumGames);
     }
 

@@ -35,6 +35,7 @@ public partial class UI : Node {
         Runtime.GameState = Game.State.Game;
         Input.MouseMode = Input.MouseModeEnum.Captured;
         if (!Runtime.Timer.IsRunning) {
+            Runtime.Audio.PlayAddBook();
             Runtime.Game.StartGame();
         }
     }

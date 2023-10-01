@@ -3,3 +3,5 @@
 *.blend1
 Desktop.ini
 Backup/
+builds/
+builds_export/

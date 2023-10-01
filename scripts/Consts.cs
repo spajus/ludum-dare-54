@@ -9,6 +9,8 @@ public static class Consts {
     public const string AudioBeepShort = "res://assets/audio/beep_short.wav";
     public const string AudioBeepLong = "res://assets/audio/beep_long.wav";
     public const float AudioRepeatDelayMsec = 150;
+    public const int SpawnBooks = 50;
+    public const int AddBookBonusTime = 3;
     public const int SessionSeconds = 60;
     public const float MoveSpeed = 2.0f;
     public const float JumpVelocity = 3.0f;
