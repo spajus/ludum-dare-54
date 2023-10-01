@@ -1,7 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://b2ebm0cvfcpod"]
+[gd_scene load_steps=3 format=3 uid="uid://b2ebm0cvfcpod"]
 
 [ext_resource type="Script" path="res://scripts/PlayerController.cs" id="1_vyadh"]
-[ext_resource type="Texture2D" uid="uid://cg5dufvdjiok6" path="res://assets/textures/crosshair.png" id="3_md4xb"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_jva3y"]
 
@@ -23,39 +22,3 @@ unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.4)
 target_position = Vector3(0, 0, -3)
 collision_mask = 2
-
-[node name="Control" type="Control" parent="."]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="CrosshairModulate" type="CanvasModulate" parent="Control"]
-unique_name_in_owner = true
-color = Color(0.14902, 0.0431373, 0.541176, 1)
-
-[node name="Crosshair" type="TextureRect" parent="Control/CrosshairModulate"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 944.0
-offset_top = 524.0
-offset_right = 976.0
-offset_bottom = 556.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("3_md4xb")
-stretch_mode = 2
-
-[node name="ScoreLabel" type="Label" parent="Control"]
-unique_name_in_owner = true
-layout_mode = 0
-offset_left = 16.0
-offset_top = 16.0
-offset_right = 342.0
-offset_bottom = 42.0
-text = "SCORE"

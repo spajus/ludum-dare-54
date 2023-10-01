@@ -1,12 +1,16 @@
 using Godot;
 using System;
+using System.ComponentModel;
 
 public partial class PlayerController : CharacterBody3D {
     public const float Speed = 2.0f;
     public const float JumpVelocity = 3.0f;
+    public const float crouchSpeed = 10f;
     private const float dropSpeed = 2f;
     private const float bookForceSpeed = 2 * 20f;
-    private const float rotateSpeed = 0.05f;
+    private const float rotateSpeed = 0.25f;
+    private Vector3 crouchOffset;
+    private Vector3 standOffset;
     private const float minHoldDist = 0.25f;
     private const float maxHoldDist = 2f;
     private const float distChangeSpeed = 0.25f;
@@ -14,22 +18,17 @@ public partial class PlayerController : CharacterBody3D {
 
     // Get the gravity from the project settings to be synced with RigidBody nodes.
     public float gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
-
     private float shootDistance = 1000f;
-
     private Camera3D camera;
     private RayCast3D sightRay;
-    private CanvasModulate crosshair;
-
     private Book carriedBook;
     private bool isRotMode;
 
     public override void _Ready() {
         camera = GetNode<Camera3D>(Nodes.Camera);
+        standOffset = camera.Position;
+        crouchOffset = standOffset * new Vector3(1f, 0.5f, 1f);
         sightRay = GetNode<RayCast3D>(Nodes.SightRay);
-        crosshair = GetNode<CanvasModulate>(Nodes.CrosshairModulate);
-        var scoreLabel = GetNode<Label>(Nodes.ScoreLabel);
-        Runtime.Score = new Score(scoreLabel);
     }
 
     public override void _PhysicsProcess(double delta) {
@@ -56,6 +55,9 @@ public partial class PlayerController : CharacterBody3D {
             force = direction * bookForceSpeed;
         }
 
+        if (isRotMode) {
+            mouseRot.Z += Input.GetAxis("rot_left", "rot_right");
+        }
         if (mouseRot.LengthSquared() > 0.001f) {
             carriedBook.ApplyTorque(mouseRot * rotateSpeed);
             mouseRot = Vector3.Zero;
@@ -65,17 +67,15 @@ public partial class PlayerController : CharacterBody3D {
 
     private void RaycastSight() {
         if (sightRay.IsColliding()) {
-            crosshair.Color = Colors.Green;
+            Runtime.UI.SetCrosshairTint(Colors.Green);
         } else {
-            crosshair.Color = Colors.White;
+            Runtime.UI.SetCrosshairTint(Colors.White);
         }
     }
 
     private Vector3 HandleInput(Vector3 velocity, float delta) {
 
-        if (!Runtime.IsFocused || (isRotMode && carriedBook != null)) {
-            return velocity;
-        }
+        if (!Runtime.IsFocused) { return velocity; }
         // Add the gravity.
         if (!IsOnFloor()) {
             velocity.Y -= gravity * delta;
@@ -95,6 +95,13 @@ public partial class PlayerController : CharacterBody3D {
             Interact();
         }
 
+        if (isOnFloor) {
+            if (Input.IsActionPressed("crouch")) {
+                camera.Position = camera.Position.Lerp(crouchOffset, delta * crouchSpeed);
+            } else {
+                camera.Position = camera.Position.Lerp(standOffset, delta * crouchSpeed);
+            }
+        }
 
         // Get the input direction and handle the movement/deceleration.
         // As good practice, you should replace UI actions with custom gameplay actions.

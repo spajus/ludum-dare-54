@@ -1,8 +1,8 @@
 using Godot;
 
 public class Score {
-    private readonly Label label;
-    public Score(Label label) {
+    private readonly RichTextLabel label;
+    public Score(RichTextLabel label) {
         this.label = label;
         Add(0);
     }
@@ -10,6 +10,6 @@ public class Score {
     private int score;
     public void Add(int amt) {
         score = Mathf.Clamp(score + amt, 0, int.MaxValue);
-        label.Text = $"SCORE: {score}";
+        label.Text = $"Score: [color=green]{score}[/color]";
     }
 }

@@ -2,14 +2,20 @@ using Godot;
 using System;
 
 public partial class Game : Node {
+    public enum State {
+        MainMenu,
+        Game,
+        GameOver,
+    }
     // Called when the node enters the scene tree for the first time.
     public override void _Ready() {
         var room = Utils.AddSceneTo<Room>(this, Scenes.Room);
         Runtime.Initialize(this, room);
-        room.SpawnBooks(10);
+        room.SpawnBooks(100);
         Utils.AddSceneTo<Node3D>(this, Scenes.Player);
+        var ui = Utils.AddSceneTo<UI>(this, Scenes.UI);
         Utils.AddSceneTo<Node3D>(this, Scenes.Bookshelf, new Vector3(0, 0, -2.25f));
-        //Utils.AddSceneTo(this, Scenes.Chest, new Vector3(2f, 0, -1.7f), new Vector3(0, 145f, 0));
+        Runtime.UI = ui;
     }
 
     public override void _Input(InputEvent evt) {
@@ -24,6 +30,10 @@ public partial class Game : Node {
                 Input.MouseMode = Input.MouseModeEnum.Visible;
             }
         }
+    }
+
+    public override void _Process(double delta) {
+        Runtime.Timer.Tick(delta);
     }
 
     public override void _ExitTree() {

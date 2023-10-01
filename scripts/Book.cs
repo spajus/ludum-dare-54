@@ -75,6 +75,7 @@ public partial class Book : RigidBody3D {
         Set("linear_damp", 5f);
         Set("angular_damp", 5f);
         if (givenScore > 0) {
+            givenScore = 0;
             Runtime.Score.Add(-givenScore);
         }
         WasMoving = true;
@@ -94,6 +95,7 @@ public partial class Book : RigidBody3D {
             GD.PrintErr("Trying to change Book.IsOnShelf to the same value! ",
                 isOnShelf);
         }
+        GD.Print("Book now on shelf: ", isOnShelf);
         IsOnShelf = isOnShelf;
     }
 }

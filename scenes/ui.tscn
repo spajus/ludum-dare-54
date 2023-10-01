@@ -1,0 +1,150 @@
+[gd_scene load_steps=3 format=3 uid="uid://bfkilw1o5pavc"]
+
+[ext_resource type="Script" path="res://scripts/UI.cs" id="1_4s4ay"]
+[ext_resource type="Texture2D" uid="uid://cg5dufvdjiok6" path="res://assets/textures/crosshair.png" id="1_bcq18"]
+
+[node name="MainUI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_4s4ay")
+
+[node name="InGameLayer" type="CanvasLayer" parent="."]
+unique_name_in_owner = true
+
+[node name="ScoreContainer" type="PanelContainer" parent="InGameLayer"]
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 77.0
+offset_bottom = 82.0
+
+[node name="MarginContainer" type="MarginContainer" parent="InGameLayer/ScoreContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="InGameLayer/ScoreContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="TimerLabel" type="RichTextLabel" parent="InGameLayer/ScoreContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+clip_contents = false
+layout_mode = 2
+bbcode_enabled = true
+text = "TIME LEFT: "
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[node name="ScoreLabel" type="RichTextLabel" parent="InGameLayer/ScoreContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+clip_contents = false
+layout_mode = 2
+bbcode_enabled = true
+text = "SCORE"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[node name="PanelContainer" type="PanelContainer" parent="InGameLayer"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -56.0
+offset_top = 16.0
+offset_right = -16.0
+offset_bottom = 56.0
+grow_horizontal = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="InGameLayer/PanelContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="InGameLayer/PanelContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="InGameLayer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Controls
+"
+horizontal_alignment = 1
+
+[node name="Label2" type="Label" parent="InGameLayer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Move: WASD
+Jump: Space
+Crouch: Shift
+Pick Up / Drop: LMB
+Rotate Book: 
+Hold RMB + Mouse / Q / E"
+
+[node name="CrosshairLayer" type="CanvasLayer" parent="InGameLayer"]
+
+[node name="Crosshair" type="TextureRect" parent="InGameLayer/CrosshairLayer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_bcq18")
+stretch_mode = 2
+
+[node name="CrosshairModulate" type="CanvasModulate" parent="InGameLayer/CrosshairLayer"]
+unique_name_in_owner = true
+color = Color(0.321569, 0, 0.356863, 1)
+
+[node name="MainMenuLayer" type="CanvasLayer" parent="."]
+
+[node name="PanelContainer" type="PanelContainer" parent="MainMenuLayer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MainMenuLayer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 50
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainMenuLayer/PanelContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 25
+
+[node name="GameName" type="Label" parent="MainMenuLayer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 61
+text = "ShelfShift"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label" type="Label" parent="MainMenuLayer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "Ludum Dare 54 entry by Spajus"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="StartGameButton" type="Button" parent="MainMenuLayer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 52
+text = "PLAY"
+
+[node name="ExitButton" type="Button" parent="MainMenuLayer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 52
+text = "EXIT"
