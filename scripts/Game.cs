@@ -16,6 +16,8 @@ public partial class Game : Node {
         Utils.AddSceneTo<Node3D>(this, Scenes.Player);
         Runtime.UI = ui;
         Runtime.Timer.OnDone += OnEndGame;
+        var soundtrack = GetNode<AudioStreamPlayer>(Nodes.Soundtrack);
+        soundtrack.Finished += () => soundtrack.Play();
     }
 
     public void StartGame() {

@@ -27,7 +27,8 @@ script = ExtResource("1_rwjee")
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_h34g6")
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+[node name="Soundtrack" type="AudioStreamPlayer" parent="."]
+unique_name_in_owner = true
 stream = ExtResource("4_ueag1")
 volume_db = -6.0
 autoplay = true
