@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://cx5pv8rln3tn4"]
+[gd_scene load_steps=6 format=3 uid="uid://cx5pv8rln3tn4"]
 
 [ext_resource type="PackedScene" uid="uid://bpsp36svrm8af" path="res://assets/blender/room.blend" id="1_cfrar"]
+[ext_resource type="Script" path="res://scripts/Room.cs" id="1_tyavx"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_viv4v"]
 size = Vector3(6.02032, 1, 6.00452)
@@ -8,7 +9,11 @@ size = Vector3(6.02032, 1, 6.00452)
 [sub_resource type="BoxShape3D" id="BoxShape3D_4c550"]
 size = Vector3(0.639386, 3.34927, 6.06374)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_a4432"]
+size = Vector3(5.77729, 1, 1)
+
 [node name="Node3D" type="Node3D"]
+script = ExtResource("1_tyavx")
 
 [node name="room" parent="." instance=ExtResource("1_cfrar")]
 
@@ -237,3 +242,14 @@ shape = SubResource("BoxShape3D_4c550")
 [node name="CollisionShape3D5" type="CollisionShape3D" parent="StaticBody3D"]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -0.00265035, 1.52969, -3.35111)
 shape = SubResource("BoxShape3D_4c550")
+
+[node name="BookSpawnArea" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 0
+monitoring = false
+monitorable = false
+
+[node name="Shape" type="CollisionShape3D" parent="BookSpawnArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.548126, 2.364)
+shape = SubResource("BoxShape3D_a4432")
+disabled = true

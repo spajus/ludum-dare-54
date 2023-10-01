@@ -50,3 +50,12 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("3_md4xb")
 stretch_mode = 2
+
+[node name="ScoreLabel" type="Label" parent="Control"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 342.0
+offset_bottom = 42.0
+text = "SCORE"

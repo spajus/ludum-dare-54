@@ -4,10 +4,11 @@ using System;
 public partial class Game : Node {
     // Called when the node enters the scene tree for the first time.
     public override void _Ready() {
-        Runtime.Initialize(this);
-        Utils.AddSceneTo(this, Scenes.Room);
-        Utils.AddSceneTo(this, Scenes.Player);
-        Utils.AddSceneTo(this, Scenes.Bookshelf, new Vector3(0, 0, -2.7f));
+        var room = Utils.AddSceneTo<Room>(this, Scenes.Room);
+        Runtime.Initialize(this, room);
+        room.SpawnBooks(10);
+        Utils.AddSceneTo<Node3D>(this, Scenes.Player);
+        Utils.AddSceneTo<Node3D>(this, Scenes.Bookshelf, new Vector3(0, 0, -2.25f));
         //Utils.AddSceneTo(this, Scenes.Chest, new Vector3(2f, 0, -1.7f), new Vector3(0, 145f, 0));
     }
 

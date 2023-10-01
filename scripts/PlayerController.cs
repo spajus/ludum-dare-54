@@ -4,6 +4,13 @@ using System;
 public partial class PlayerController : CharacterBody3D {
     public const float Speed = 2.0f;
     public const float JumpVelocity = 3.0f;
+    private const float dropSpeed = 2f;
+    private const float bookForceSpeed = 2 * 20f;
+    private const float rotateSpeed = 0.05f;
+    private const float minHoldDist = 0.25f;
+    private const float maxHoldDist = 2f;
+    private const float distChangeSpeed = 0.25f;
+    private float holdDistance = 1f;
 
     // Get the gravity from the project settings to be synced with RigidBody nodes.
     public float gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
@@ -13,14 +20,6 @@ public partial class PlayerController : CharacterBody3D {
     private Camera3D camera;
     private RayCast3D sightRay;
     private CanvasModulate crosshair;
-    private float dropSpeed = 2;
-    private float bookForceSpeed = 2f;
-    private float bookCarryMass = 0.05f;
-    private float rotateSpeed = 0.05f;
-    private float holdDistance = 1f;
-    private float minHoldDist = 0.25f;
-    private float maxHoldDist = 2f;
-    private float distChangeSpeed = 0.25f;
 
     private Book carriedBook;
     private bool isRotMode;
@@ -29,6 +28,8 @@ public partial class PlayerController : CharacterBody3D {
         camera = GetNode<Camera3D>(Nodes.Camera);
         sightRay = GetNode<RayCast3D>(Nodes.SightRay);
         crosshair = GetNode<CanvasModulate>(Nodes.CrosshairModulate);
+        var scoreLabel = GetNode<Label>(Nodes.ScoreLabel);
+        Runtime.Score = new Score(scoreLabel);
     }
 
     public override void _PhysicsProcess(double delta) {
@@ -87,8 +88,8 @@ public partial class PlayerController : CharacterBody3D {
             velocity.Y = JumpVelocity;
         }
 
-        if (Input.IsActionJustPressed("spawn_book")) {
-            SpawnBook();
+        if (Input.IsActionPressed("spawn_book")) {
+            DebugSpawnBook();
         }
         if (Input.IsActionJustPressed("interact")) {
             Interact();
@@ -124,20 +125,16 @@ public partial class PlayerController : CharacterBody3D {
     }
 
     private void CarryBook(Book book) {
-        book.Set("mass", bookCarryMass);
-        book.Set("linear_damp", 5f);
-        book.Set("angular_damp", 5f);
+        book.Carry();
         carriedBook = book;
     }
 
     private void DropBook() {
-        carriedBook.Set("mass", 1f);
-        carriedBook.Set("linear_damp", 0f);
-        carriedBook.Set("angular_damp", 0f);
+        carriedBook.Drop();
         carriedBook = null;
     }
 
-    private void SpawnBook() {
+    private void DebugSpawnBook() {
         var book = Runtime.BookPool.Spawn();
         var sightDir = sightRay.ToGlobal(sightRay.TargetPosition);
         var rayPos = sightRay.GlobalPosition;
